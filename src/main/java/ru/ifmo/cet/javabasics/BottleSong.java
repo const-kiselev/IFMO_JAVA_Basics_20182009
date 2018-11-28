@@ -31,13 +31,63 @@ package ru.ifmo.cet.javabasics;
  * Нужно ограничить возможность взятия бутылок натуральным число не более 99 бутылок за раз.
  */
 public class BottleSong {
-
+    int bottleTakenAtOnce;
     public BottleSong(int bottleTakenAtOnce) {
-        //TODO
+        this.bottleTakenAtOnce = bottleTakenAtOnce;
     }
 
     public String getBottleSongLyrics() {
-        //TODO
-        throw new UnsupportedOperationException();
+        if(bottleTakenAtOnce > 99)
+            throw new IllegalArgumentException();
+        else if(bottleTakenAtOnce <= 0)
+            throw new IllegalArgumentException();
+
+
+        String result = "";
+        String numOfTakenBottles = numSpelling(this.bottleTakenAtOnce);
+        for(int i=99; i>0;i-=bottleTakenAtOnce){
+            if(i<bottleTakenAtOnce)
+                numOfTakenBottles = numSpelling(i);
+            result += Integer.toString(i);
+            if (i>1)
+                result += " bottles of beer on the wall, " + Integer.toString(i) + " bottles of beer.\n";
+            else
+                result += " bottle of beer on the wall, " + Integer.toString(i) + " bottle of beer.\n";
+
+            result += "Take " + numOfTakenBottles + " down and pass around, ";
+            if(i-bottleTakenAtOnce == 1)
+                result += "1 bottle of beer on the wall.\n";
+            else if(i-bottleTakenAtOnce > 1)
+                result += Integer.toString(i-bottleTakenAtOnce)+" bottles of beer on the wall.\n";
+        }
+        result += "no more bottles of beer on the wall.\n" + "No more bottles of beer on the wall, no more bottles of beer.\n" +
+                "Go to the store and buy some more, 99 bottles of beer on the wall.\n";
+        return result;
+
+
     }
+
+    private String numSpelling(int num){
+        int first = num / 10,
+                second = num%10;
+        String result;
+        String[] ten = {"ten", "eleven", "twelve", "thirteen",
+                "fourteen", "fifteen", "sixteen",
+                "seventeen", "eighteen", "nineteen"};
+        String[] s = {"","one", "two", "three", "four", "five",
+                "six", "seven", "eight", "nine"};
+        String[] f = {"", "ten", "twenty", "thirty", "forty",
+                "fifty", "sixty", "seventy", "eighty", "ninety"};
+
+        if(first !=1) {
+            result = f[first];
+            if(second>0 && first >0)
+                result += " ";
+            result += s[second];
+        }
+        else
+            result = ten[second];
+        return result;
+    }
+
 }
